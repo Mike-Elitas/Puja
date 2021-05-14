@@ -1,5 +1,6 @@
 from User import User
 
+
 class Bid:
     bidder = User
     bidCash = 0
