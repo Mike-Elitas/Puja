@@ -9,10 +9,10 @@ class Auction:
     bids = [Bid]
     highestBid = Bid
 
-    def __init__(self, auctionedItem, host, active):
+    def __init__(self, auctionedItem, host):
         self.auctionedItem = auctionedItem
         self.host = host
-        self.active = active
+        self.active = True
 
     def getAuctionedItem(self):
         return self.auctionedItem
