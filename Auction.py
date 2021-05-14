@@ -7,10 +7,7 @@ class Auction:
     host = User
     active = False
     bids = []
-    if len(bids) > 0:
-        highestBid = bids.__getitem__(len(bids) - 1)
-    else:
-        highestBid = None
+    highestBid = Bid
 
     def __init__(self, auctionedItem, host):
         self.auctionedItem = auctionedItem
@@ -27,6 +24,9 @@ class Auction:
     def getStatus(self):
         return self.active
 
+    def setStatus(self, status):
+        self.active = status
+
     def getBids(self):
         return self.bids
 
@@ -35,46 +35,46 @@ class Auction:
 
     def bidding(self, user, cash=None):
         if cash is not None:
-            if not self.active:
+            if not self.getStatus():
                 print ("Auction is not open")
                 return False
             elif user.getCredit() < cash:
                 print ("User lacks funds to make this bid")
                 return False
-            elif user == self.host:
+            elif user == self.getHost():
                 print ("User can't because he's the owner of the auction")
                 return False
-            elif len(self.bids) < 1:
-                self.bids.append(Bid(user, cash))
+            elif len(self.getBids()) < 1:
+                self.getBids().append(Bid(user, cash))
                 print ("First bid has been sent")
-                self.highestBid = self.bids[0]
+                self.highestBid = self.getBids()[0]
                 return True
-            elif cash < Bid.getBidCash(self.bids.__getitem__(len(self.bids) - 1)) - 1:
+            elif cash < Bid.getBidCash(self.getBids().__getitem__(len(self.getBids()) - 1)) - 1:
                 print ("The highest bid is higher than this one")
                 return False
             else:
-                self.bids.append(Bid(user, cash))
+                self.getBids().append(Bid(user, cash))
                 return True
         else:
-            if not self.active:
+            if not self.getStatus():
                 print ("Auction is not open")
                 return False
-            elif user.getCredit() < self.highestBid:
+            elif user.getCredit() < 1:
                 print ("User lacks funds to make this bid")
                 return False
-            elif user == self.host:
+            elif user == self.getHost():
                 print ("User can't because he's the owner of the auction")
                 return False
-            elif len(self.bids) < 1:
-                self.bids.append(Bid(user, 1))
+            elif len(self.getBids()) < 1:
+                self.getBids().append(Bid(user, 1))
                 print ("First bid has been sent")
-                self.highestBid = self.bids[0]
+                self.highestBid = self.getBids()[0]
                 return True
             elif user.getCredit() < Bid.getBidCash(self.bids.__getitem__(len(self.bids) - 1)) + 1:
                 print ("The highest bid is higher than this one")
                 return False
             else:
-                self.bids.append(Bid(user, self.highestBid+1))
+                self.getBids().append(Bid(user, Bid.getBidCash(self.bids.__getitem__(len(self.bids) - 1)) + 1))
                 return True
 
     # def bidding(self, user):
@@ -98,6 +98,7 @@ class Auction:
         if self.active & len(self.bids) > 0:
             User.decreaseCredit(Bid.getBidder(self.highestBid), Bid.getBidCash(self.highestBid))
             User.incrementCredit(self.host, Bid.getBidCash(self.highestBid))
+            self.active = False
             return True
         else:
             return False
