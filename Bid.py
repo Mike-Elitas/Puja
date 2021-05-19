@@ -2,7 +2,7 @@ from User import User
 
 
 class Bid:
-    bidder = User
+    bidder = User("", 0)
     bidCash = 0
 
     def __init__(self, bidder, bidCash):

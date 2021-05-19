@@ -6,12 +6,16 @@ class User:
     def __init__(self, name, credit=None):
         self.name = name
         self.credit = credit
+        self.auctions = list()
 
     def getName(self):
         return self.name
 
     def getCredit(self):
         return self.credit
+
+    def setCredit(self, cash):
+        self.credit = cash
 
     def getAuctions(self):
         return self.auctions
