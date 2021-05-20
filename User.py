@@ -11,9 +11,6 @@ class User:
     def getCredit(self):
         return self.credit
 
-    def setCredit(self, cash):
-        self.credit = cash
-
     def getAuctions(self):
         return self.auctions
 
