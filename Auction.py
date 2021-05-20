@@ -3,11 +3,6 @@ from Bid import Bid
 
 
 class Auction:
-    auctionedItem = ""
-    host = User("", 0)
-    active = False
-    bids = []
-    highestBid = Bid(User("", 0), 0)
 
     def __init__(self, auctionedItem, host):
         self.auctionedItem = auctionedItem
@@ -15,6 +10,7 @@ class Auction:
         self.host.getAuctions().append(self)
         self.active = True
         self.bids = list()
+        self.highestBid = Bid(User("", 0), 0)
 
     def getAuctionedItem(self):
         return self.auctionedItem
@@ -31,14 +27,15 @@ class Auction:
     def getBids(self):
         return self.bids
 
-    def setBids(self, bid):
-        self.bids.append(bid)
-
     def getHighestBid(self):
         return self.highestBid
 
     def setHighestBid(self, bid):
         self.highestBid = bid
+
+    def viewHighestBid(self):
+        print("The current highest bid is " + str(self.getHighestBid().getBidCash()) + "$ by: "
+              + self.getHighestBid().getBidder().getName())
 
     def bidding(self, user, cash=None):
         if not self.getStatus():
@@ -60,7 +57,7 @@ class Auction:
                 print("Can't bid beacuse this bid is lower than highest bid")
                 return False
             else:
-                self.setBids(Bid(user, cash))
+                self.bids.append(Bid(user, cash))
                 self.setHighestBid(Bid(user, cash))
                 print("The bid was done successfully")
         else:
@@ -76,7 +73,6 @@ class Auction:
                 self.getBids().append(self.getHighestBid().getBidCash() + 1)
                 self.setHighestBid(Bid(user, self.getHighestBid().getBidCash() + 1))
                 return True
-
 
     def execute(self):
         if not self.getStatus() or len(self.getBids()) < 1:

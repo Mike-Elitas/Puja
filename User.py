@@ -1,7 +1,4 @@
 class User:
-    name = ""
-    credit = 0
-    auctions = []
 
     def __init__(self, name, credit=None):
         self.name = name

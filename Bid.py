@@ -1,9 +1,4 @@
-from User import User
-
-
 class Bid:
-    bidder = User("", 0)
-    bidCash = 0
 
     def __init__(self, bidder, bidCash):
         self.bidder = bidder
